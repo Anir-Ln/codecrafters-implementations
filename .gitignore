@@ -1,3 +1,4 @@
 /.vscode
 **/.vscode
-redis-python/.*
+redis-python/**/.*
+redis-python/__pycache__/*
