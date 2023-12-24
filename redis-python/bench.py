@@ -13,7 +13,7 @@ def timed(s):
   start = time.time()
   yield
   duration = round(time.time() - start, 3)
-  benchmarks.append("%s: time = %ss, speed = %dset&get/s" % (s, duration, 10000/duration))
+  benchmarks.append("%s: time = %ss, speed = %dset&get/s" % (s, duration, N/duration))
 
 
 def run_benchmark(client):
