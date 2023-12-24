@@ -1,4 +1,3 @@
-from datetime import datetime
 from gevent import socket
 from gevent.pool import Pool
 from gevent.server import StreamServer
@@ -88,8 +87,8 @@ class ProtocolHandler(object):
       for item in data:
         self._write(buf, item)
     elif isinstance(data, dict):
-      buf.write(b'%{len(data)}\r\n')
-      for key, value in data.items:
+      buf.write(b'%%%d\r\n' % len(data))
+      for key, value in data.items():
         self._write(buf, key)
         self._write(buf, value)
     elif data is None:
@@ -187,10 +186,16 @@ class Client(object):
     if isinstance(resp, Error):
       raise CommandError(resp.message)
     return resp
+  
+  def close_connection(self):
+    if self._fh:
+      self._fh.close()
+      self._fh = None
+    if self._socket:
+      self._socket.close()
+      self._socket = None
 
 
-
-# testing
 if __name__ == "__main__":
   from gevent import monkey; monkey.patch_all()
   Server().run()
