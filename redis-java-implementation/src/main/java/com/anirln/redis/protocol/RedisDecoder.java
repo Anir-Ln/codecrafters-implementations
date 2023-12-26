@@ -19,14 +19,14 @@ public class RedisDecoder extends ReplayingDecoder<RedisData> {
         return data;
     }
 
-    private byte[] readLine(ByteBuf buffer) {
+    private RedisBytes readLine(ByteBuf buffer) {
         int eol = findEndOfLine(buffer);
         int size = eol - buffer.readerIndex();
         byte[] bytes = new byte[size];
         buffer.readBytes(bytes);
         // skip \r\n
         buffer.skipBytes(2);
-        return bytes;
+        return new RedisBytes(bytes);
     }
 
     private static int findEndOfLine(final ByteBuf buffer) {
@@ -52,7 +52,7 @@ public class RedisDecoder extends ReplayingDecoder<RedisData> {
         }
 
         @Override
-        public byte[] readLine() {
+        public RedisBytes readLine() {
             return decoder.readLine(this.buffer);
         }
 

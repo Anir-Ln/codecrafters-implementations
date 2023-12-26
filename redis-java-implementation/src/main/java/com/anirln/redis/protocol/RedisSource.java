@@ -7,6 +7,6 @@ public interface RedisSource {
      * @return the bytes from the buffer until \r\n, skips these bytes.
      * example: "+hello world"
      */
-    byte[] readLine();
+    RedisBytes readLine();
     String readString(int length);
 }

@@ -1,7 +1,7 @@
 package com.anirln.redis.protocol;
 
 public enum RedisDataType {
-    // Map can be serialized as an array
+    // Map, and Set can be serialized as an array
     STRING((byte) '+'),
     INTEGER((byte) ':'),
     BULK_STRING((byte) '$'),

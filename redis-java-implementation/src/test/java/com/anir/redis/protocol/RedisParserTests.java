@@ -15,8 +15,7 @@ public class RedisParserTests {
 
     @Test
     public void testParseRedisDataString() {
-        // "+hello world"
-        byte[] helloWorldBytes = {43, 104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100};
+        RedisBytes helloWorldBytes = new RedisBytes("+hello world");
         RedisData helloWorldData = new SimpleRedisData<>(RedisDataType.STRING, "hello world");
 
         when(redisSource.readLine()).thenReturn(helloWorldBytes);
@@ -27,7 +26,7 @@ public class RedisParserTests {
 
     @Test
     public void testParseRedisDataInteger() {
-        byte[] numberTenBytes = {58, 49, 48};
+        RedisBytes numberTenBytes = new RedisBytes(":10");
         RedisData numberTenData = new SimpleRedisData<>(RedisDataType.INTEGER, 10);
         when(redisSource.readLine()).thenReturn(numberTenBytes);
 
@@ -37,11 +36,11 @@ public class RedisParserTests {
 
     @Test
     public void testParseRedisDataArray() {
-        byte[][] arrayBytes = {
-                {42, 51},
-                {43, 118, 97, 108, 117, 101, 49},
-                {43, 118, 97, 108, 117, 101, 50},
-                {58, 49, 48}
+        RedisBytes[] arrayBytes = {
+                new RedisBytes("*3"),
+                new RedisBytes("+value1"),
+                new RedisBytes("+value2"),
+                new RedisBytes(":10"),
         };
         RedisData arrayRedisData = new SimpleRedisData<>(RedisDataType.ARRAY, List.of(
             new SimpleRedisData<>(RedisDataType.STRING, "value1"),
@@ -54,6 +53,5 @@ public class RedisParserTests {
         RedisData data = redisParser.next();
         Assertions.assertEquals(arrayRedisData, data);
     }
-
 
 }
